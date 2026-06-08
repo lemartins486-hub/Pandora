@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pandora 2.0</title>
+  <link rel="stylesheet" href="./styles.css" />
+<body>
+  <div id="app">
+    <header>
+      <img id="logo" src="../assets/logo.svg" alt="Pandora" />
+      <div id="greeting">Bom dia — eu sou a Pandora. Vamos começar?</div>
+    </header>
+    <main>
+      <section>
+        <input id="query" placeholder="Peça algo (ex.: tocar música, abrir notepad)"/>
+        <button id="searchBtn">Enviar</button>
+      </section>
+      <section id="responses"></section>
+      <section>
+        <button id="listSessions">Ver últimas sessões</button>
+        <ul id="sessions"></ul>
+      </section>
+    </main>
+  </div>
+  <script src="./renderer.js"></script>
+</body>
+</html>
