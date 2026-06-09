@@ -1,0 +1,46 @@
+name: Build & Test (Windows)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Init DB
+        run: npm run init-db
+      - name: Start agent in background
+        run: Start-Process -NoNewWindow -FilePath node -ArgumentList "agent.js"; Start-Sleep -s 2
+      - name: Run tests
+        run: npm run test:agent
+
+  pack:
+    runs-on: windows-latest
+    needs: build-test
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+      - name: Build installer
+        run: npm run dist
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: pandora-installer
+          path: dist/**/*.exe
